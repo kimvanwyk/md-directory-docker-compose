@@ -1,0 +1,26 @@
+version: '3'
+services:
+  mysql:
+    image: "mysql:5.7.21"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wortel
+    ports:
+     - "3307:3306"
+    volumes:
+     - /home/kimv/src/md_directory/mysql_data/:/var/lib/mysql
+  phpmyadmin:
+    image: "phpmyadmin/phpmyadmin"
+    restart: always
+    links:
+     -  mysql:db
+    ports:
+     - "8101:80"
+  data-entry-side:
+    image: registry.gitlab.com/kimvanwyk/md-directory-data-entry-django:latest
+    restart: always
+    links:
+     - mysql:db
+    ports:
+     - "8100:9000" 
+     
